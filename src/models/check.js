@@ -30,7 +30,7 @@ const checkSchema= new mongoose.Schema({
     },
     interval:{
         type: Number,
-        default:600000
+        default:10
     },
     threshold:{
         type:Number,
@@ -60,6 +60,10 @@ const checkSchema= new mongoose.Schema({
     },
     visits:{
         type: []
+    },
+    userId:{
+        type:mongoose.Schema.Types.ObjectId,
+        required:true
     }
 
 })

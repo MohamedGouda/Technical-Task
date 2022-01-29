@@ -23,8 +23,13 @@ const monitor =   async (req, response) => {
 
     const currentCheck = await Check.findOne({ name: req.params.name })
 
+    console.log(currentCheck)
+    
     if (!currentCheck) {
-        return res.status(404).send('No Such Check found to run.....')
+        return 0
+    }
+    if(req.user._id != currentCheck.userId){
+        return 1
     }
 
     axios.interceptors.request.use(function (config) {
