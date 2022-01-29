@@ -7,15 +7,15 @@ const mail = require('../emails/checkURLStatusMail')
 const sendNotificationTowebhook= (url , status)=>{
     axios({
         method: 'post',
-        url,
+        url:'https://www.google.com',
         data: {
             Message: `${url} is currently ${status}`
         }
       }).then(()=>{
-          console.log("Notification Send to Webhook")
+          //console.log("Notification Send to Webhook")
       })
       .catch((error)=>{
-          console.log("Error while sending Notification to webhook")
+          //console.log("Error while sending Notification to webhook")
       })
 }
 
@@ -23,12 +23,12 @@ const monitor =   async (req, response) => {
 
     const currentCheck = await Check.findOne({ name: req.params.name })
 
-    console.log(currentCheck)
     
     if (!currentCheck) {
         return 0
     }
-    if(req.user._id != currentCheck.userId){
+    
+    if(req.user._id.toString() !== currentCheck.userId.toString()){
         return 1
     }
 

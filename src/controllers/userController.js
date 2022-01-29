@@ -7,11 +7,13 @@ module.exports ={
 
     registerUser: async (req, res)=>{
 
-        try{            
-            const newUser =await  new user(req.body).save();
+        try{        
+             
+            const newUser = await  new user(req.body).save()
             sendWelcomeEmail(newUser.email , newUser.name)
+             
             await newUser.generateAuthtoken()
-            return res.send(newUser)
+             res.send(newUser)
         }
         catch(error){
             res.status(400).send(error)
@@ -22,9 +24,15 @@ module.exports ={
     login: async (req , res)=>{
         try{
             const loggedUser = await user.findByCredentioals( req.body.email , req.body.password)
-            const token = await loggedUser.generateAuthtoken()
-
-            res.send(`logged in successfuly .... ${token}`)
+            
+            if(loggedUser == undefined  ){
+                res.status(404).send('user not registered.....')
+            }else if(loggedUser == null){
+                res.status(401).send('provided data is not correct.....')
+            }else{
+                const token = await loggedUser.generateAuthtoken()
+                res.send(`logged in successfuly .... ${token}`)
+            }
 
         }catch(error){
             res.status(500).send(error);

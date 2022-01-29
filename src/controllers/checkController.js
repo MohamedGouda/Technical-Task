@@ -22,14 +22,15 @@ module.exports ={
             const foundCheck = await check.findOne({name: req.params.name})
 
             if(!foundCheck){
-                return res.status(404).send("No checks Found....")
-            }else if(foundCheck.userId != req.user._id){
-                res.status(401).send('your are not authorized to run this check.....')
-            }else{
-                await check.updateOne({_id: foundCheck._id} , req.body ).save()         
-                res.send("Check Updated....")
+                 res.status(404).send("No checks Found....")
+            }else if(req.user._id.toString() !== foundCheck.userId.toString()){
+                 res.status(401).send('your are not authorized to run this check.....')
             }
 
+            const updatedCheck = await check.updateOne({_id: foundCheck._id} , req.body ,{new:true , runValidators:true} )
+
+             res.send("Check Updated....")
+            
         }catch(error){
             res.status(400).send(error)
         }
@@ -39,12 +40,13 @@ module.exports ={
         try{
             const foundCheck = await check.findOne({name: req.params.name})
 
+            
             if(!foundCheck){
                 return res.status(404).send("No checks Found....")
-            }else if(foundCheck.userId != req.user._id){
+            }else if(req.user._id.toString() !== foundCheck.userId.toString()){
                 res.status(401).send('your are not authorized to delete this check.....')
             }else{
-                await check.deleteOne({_id: foundCheck._id} ).save()         
+                await check.deleteOne({_id: foundCheck._id})         
                 res.send("Check Deleted....")
             }
 
@@ -75,7 +77,7 @@ module.exports ={
 
         if(!currentCheck){
             return res.status(404).send('No Such Check Found.....')
-        }else if(currentCheck.userId != req.user._id){
+        }else if(req.user._id.toString() !== currentCheck.userId.toString()){
             res.status(401).send('you are not authorized to genearte this report....')
         }else{
             res.send(reportLogic.generateReport(currentCheck.visits))

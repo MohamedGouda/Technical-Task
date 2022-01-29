@@ -7,9 +7,9 @@ router.post('/checks' , auth , checkController.createCheck )
 
 router.post('/checks/Run/:name' , auth ,  checkController.runCheck)
 
-router.get('/checks/:tag/report' , auth ,  checkController.checkReportByTag)
-
 router.get('/checks/:name/report' , auth ,  checkController.checkReport)
+
+router.get('/checks/:tag/groupReport' , auth ,  checkController.checkReportByTag)
 
 router.patch('/checks/:name' , auth ,  checkController.editCheck)
 
