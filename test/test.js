@@ -37,8 +37,41 @@ test('should create new check' , async ()=>{
     }).expect(200)
 })
 
+
+test('should create new check' , async ()=>{
+    await request(app).post('/checks')
+        .set('Authorization',`Bearer ${token}`)
+        .send({
+        "name":"checkGithub",
+        "url":"https://www.github.com/",
+        "protocol":"https"
+    }).expect(200)
+})
+
+test('should create new check' , async ()=>{
+    await request(app).post('/checks')
+        .set('Authorization',`Bearer ${token}`)
+        .send({
+        "name":"checklinkedin",
+        "url":"https://www.linkedin.com/",
+        "protocol":"https"
+    }).expect(200)
+})
+
 test('should run  check' , async ()=>{
     await request(app).post('/checks/Run/checkGoogle')
+        .set('Authorization',`Bearer ${token}`)
+        .send().expect(200)
+})
+
+test('should run  check' , async ()=>{
+    await request(app).post('/checks/Run/checkGithub')
+        .set('Authorization',`Bearer ${token}`)
+        .send().expect(200)
+})
+
+test('should run  check' , async ()=>{
+    await request(app).post('/checks/Run/checklinkedin')
         .set('Authorization',`Bearer ${token}`)
         .send().expect(200)
 })
