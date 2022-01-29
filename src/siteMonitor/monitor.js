@@ -1,12 +1,13 @@
-const axios = require("axios");
-const res = require("express/lib/response");
+const axios = require("axios")
+const cron = require('node-cron')
+const res = require("express/lib/response")
 const Check = require('../models/check')
 const mail = require('../emails/checkURLStatusMail')
 
 const sendNotificationTowebhook= (url , status)=>{
     axios({
         method: 'post',
-        url: url,
+        url,
         data: {
             Message: `${url} is currently ${status}`
         }
@@ -18,7 +19,7 @@ const sendNotificationTowebhook= (url , status)=>{
       })
 }
 
-const monitor = async (req, response) => {
+const monitor =   async (req, response) => {
 
     const currentCheck = await Check.findOne({ name: req.params.name })
 

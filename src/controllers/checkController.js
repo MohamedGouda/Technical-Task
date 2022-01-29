@@ -1,4 +1,5 @@
 const check = require('../models/check')
+const cron = require('node-cron');
 const reportLogic = require('../Logic/reportLogic')
 const monitor = require('../siteMonitor/monitor');
 
@@ -64,6 +65,7 @@ module.exports ={
 
     checkReport : async (req , res)=>{
 
+
         const currentCheck = await check.findOne({name: req.params.name})
 
         if(!currentCheck){
@@ -73,8 +75,16 @@ module.exports ={
 
         res.send(reportLogic.generateReport(currentCheck.visits))
     },
-
+    
     checkReportByTag : async (req , res)=>{
+
+        const userChecksListByTag = await check.find({tags: req.params.tag})
+
+        if(!userChecksListByTag){
+            return res.status(404).send('No Such Check Found.....')
+        }
+
+        res.send(reportLogic.generateReportByTag(userChecksListByTag))
 
     }
 }

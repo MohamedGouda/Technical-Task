@@ -1,0 +1,4 @@
+cron:
+      description: "test service availability"
+      url: http://localhots:3000/checks/Run/googleCheck
+      schedule: 'every 1 mins'
