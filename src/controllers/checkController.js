@@ -64,6 +64,32 @@ module.exports ={
             }else if(returnedValue == 1){
                 res.status(401).send('your are not authorized to run this check.....')
             }else{
+
+                if(req.body.run == 'true'){
+
+                cron.schedule(`run ${req.parama.name}`,'* * * * *', function() {
+                    axios({
+                        method: 'post',
+                        url:`http://localhost:3000/checks/Run/${req.parama.name}`,
+                        Headers:{
+                            "Authorization":`Bearer ${req.user.tokens[0].token}` 
+                        }
+                      }).then(()=>{
+                            console.log("running......")
+                      })
+                      .catch((error)=>{
+                          console.log("Error while running check .....")
+                      })
+                })
+            }
+            else{
+                if(cron.scheduledJobs[`run ${req.parama.name}`]){
+                    cron.scheduledJobs[`run ${req.parama.name}`].stop()
+                }else{
+                    
+                }
+            }
+
                 res.send('check run successfully.....')
             }
         }
